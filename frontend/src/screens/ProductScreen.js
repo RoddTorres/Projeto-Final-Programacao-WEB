@@ -1,6 +1,7 @@
 import "./ProductScreen.css";
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import { getProductDetails } from "../redux/actions/productActions";
 import { addToCart } from "../redux/actions/cartActions";
 
@@ -11,12 +12,13 @@ const ProductScreen = ({ match, history }) => {
   
   const productDetails = useSelector((state) => state.getProductDetails);
   const { loading, error, product } = productDetails;
+  const {id} = useParams();
 
   useEffect(() => {
-    if (product && match.params.id !== product._id) {
-      dispatch(getProductDetails(match.params.id));
+    if (product && id !== product._id) {
+      dispatch(getProductDetails(id));
     }
-  }, [dispatch, match, product]);
+  }, [dispatch, product, id]);
      
   const addToCartHandler = () => {
     dispatch(addToCart(product._id, qty));
